@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from os.path import join, dirname
 
 
@@ -7,7 +8,11 @@ def load_data():
     path = join(dirname(__file__), 'heart.csv')
     df = pd.read_csv(path)
     x = df.iloc[:, :-1]
+    x_columns = df.columns[:-1]
     y = df.iloc[:, -1]
+    for scaler in (MinMaxScaler(), StandardScaler()):
+        x = scaler.fit_transform(x)
+        x = pd.DataFrame(x, columns=x_columns)
     x_train, x_test, y_train, y_test = \
         train_test_split(x, y, test_size=0.2, random_state=42, shuffle=True,
                          stratify=y)
