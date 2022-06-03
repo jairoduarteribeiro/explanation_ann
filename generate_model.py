@@ -1,19 +1,16 @@
-from keras.utils import normalize
-from keras.models import Sequential
-from keras.layers import Dense, Input
-from keras.optimizers import Adam
-from keras.losses import SparseCategoricalCrossentropy
-from keras.metrics import SparseCategoricalAccuracy
-from keras.activations import relu, softmax
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Input
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.losses import SparseCategoricalCrossentropy
+from tensorflow.keras.metrics import SparseCategoricalAccuracy
+from tensorflow.keras.activations import relu, softmax
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from model_utils import model_path
 from time import time
 from datasets.heart_disease import heart
 
 # Load Glass dataset and normalize it
 (x_train, y_train), (x_test, y_test) = heart.load_data()
-x_train = normalize(x_train)
-x_test = normalize(x_test)
 
 # Parameters
 n_classes = 2
