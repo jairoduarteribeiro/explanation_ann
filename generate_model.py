@@ -5,7 +5,7 @@ from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from tensorflow.keras.metrics import SparseCategoricalAccuracy
 from tensorflow.keras.activations import relu, softmax
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-from model_utils import model_path
+from models.model_utils import get_model_path
 from time import time
 from datasets.heart_disease import heart
 
@@ -30,7 +30,7 @@ model.compile(optimizer=Adam(),
 
 # Callbacks
 early_stopping = EarlyStopping(patience=20)
-model_checkpoint = ModelCheckpoint(filepath=model_path('heart'),
+model_checkpoint = ModelCheckpoint(filepath=get_model_path('heart.h5'),
                                    save_best_only=True)
 
 if __name__ == '__main__':

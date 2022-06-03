@@ -1,7 +1,4 @@
-import pandas as pd
-from tensorflow.keras.models import load_model
 from docplex.mp.model import Model
-from os.path import join, dirname
 from solver_utils import get_input_domain_and_bounds, get_input_variables, get_output_variables, \
     get_intermediate_variables, get_auxiliary_variables, get_decision_variables
 from tjeng import build_tjeng_network
@@ -32,16 +29,3 @@ def build_network(model, dataframe, method):
     else:
         mdl, output_bounds = build_tjeng_network(mdl, layers, variables)
     return mdl, output_bounds
-
-
-if __name__ == '__main__':
-    train_path = join(dirname(__file__), 'datasets', 'heart_disease', 'train.csv')
-    train_data = pd.read_csv(train_path)
-    test_path = join(dirname(__file__), 'datasets', 'heart_disease', 'train.csv')
-    test_data = pd.read_csv(test_path)
-    dataframe = pd.concat([train_data, test_data], ignore_index=True)
-    model_path = join(dirname(__file__), 'models', 'heart.h5')
-    model = load_model(model_path)
-    mdl, output_bounds = build_network(model, dataframe, 'tjeng')
-    print(mdl.export_to_string())
-    print(output_bounds)
