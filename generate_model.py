@@ -15,8 +15,8 @@ from datasets.heart_disease import heart
 # Parameters
 n_classes = 2
 n_hidden_layers = 4
-n_neurons = 64
-n_epochs = 1000
+n_neurons = 32
+n_epochs = 100
 batch_size = 4
 
 # Create model
