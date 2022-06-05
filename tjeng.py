@@ -1,3 +1,4 @@
+import numpy as np
 from solver_utils import maximize, minimize
 
 
@@ -8,13 +9,13 @@ def build_tjeng_network(mdl, layers, variables):
         x = variables['input'] if layer_idx == 0 else variables['intermediate'][layer_idx - 1]
         _A = layer.get_weights()[0].T
         _b = layer.bias.numpy()
+        number_neurons = len(_A)
         if layer_idx != number_layers - 1:
             _a = variables['decision'][layer_idx]
             _y = variables['intermediate'][layer_idx]
         else:
-            _a = None
+            _a = np.empty(number_neurons)  # prevent exception in enumerate
             _y = variables['output']
-        number_neurons = len(_A)
         for neuron_idx, (A, b, y, a) in enumerate(zip(_A, _b, _y, _a)):
             progress = (layer_idx * number_neurons + neuron_idx) / (number_layers * number_neurons)
             print(f'Progress: {progress * 100:.2f}%')

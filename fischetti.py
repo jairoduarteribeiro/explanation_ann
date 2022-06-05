@@ -1,3 +1,4 @@
+import numpy as np
 from solver_utils import maximize, minimize
 
 
@@ -8,15 +9,15 @@ def build_fischetti_network(mdl, layers, variables):
         x = variables['input'] if layer_idx == 0 else variables['intermediate'][layer_idx - 1]
         _A = layer.get_weights()[0].T
         _b = layer.bias.numpy()
+        number_neurons = len(_A)
         if layer_idx != number_layers - 1:
             _s = variables['auxiliary'][layer_idx]
             _a = variables['decision'][layer_idx]
             _y = variables['intermediate'][layer_idx]
         else:
-            _s = None
-            _a = None
+            _s = np.empty(number_neurons)  # prevent exception in enumerate
+            _a = np.empty(number_neurons)
             _y = variables['output']
-        number_neurons = len(_A)
         for neuron_idx, (A, b, y, a, s) in enumerate(zip(_A, _b, _y, _a, _s)):
             progress = (layer_idx * number_neurons + neuron_idx) / (number_layers * number_neurons)
             print(f'Progress: {progress * 100:.2f}%')
