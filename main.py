@@ -1,16 +1,20 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+import pandas as pd
+from tensorflow.keras.models import load_model
+from datasets.dataset_utils import get_dataset_path
+from models.model_utils import get_model_path
+from milp import build_network
 
 
-# Press the green button in the gutter to run the script.
+def main():
+    train_path = get_dataset_path('heart_disease', 'train.csv')
+    train_data = pd.read_csv(train_path)
+    test_path = get_dataset_path('heart_disease', 'train.csv')
+    test_data = pd.read_csv(test_path)
+    dataframe = pd.concat([train_data, test_data], ignore_index=True)
+    model_path = get_model_path('heart.h5')
+    model = load_model(model_path)
+    mdl, output_bounds = build_network(model, dataframe, 'tjeng')
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
