@@ -39,3 +39,13 @@ def build_fischetti_network(mdl, layers, variables):
                 output_bounds.append([lower_bound, upper_bound])
     print('Progress: 100.00%')
     return mdl, output_bounds
+
+
+def insert_output_constraints_fischetti(mdl, network_output, variables):
+    output_variable = variables['output'][network_output]
+    binary_idx = 0
+    for output_idx, output in enumerate(variables['output']):
+        if output_idx != network_output:
+            indicator = variables['binary'][binary_idx]
+            mdl.add_indicator(indicator, output_variable <= output, 1)
+            binary_idx += 1

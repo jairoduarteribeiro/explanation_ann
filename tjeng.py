@@ -37,3 +37,15 @@ def build_tjeng_network(mdl, layers, variables):
                 output_bounds.append([lower_bound, upper_bound])
     print('Progress: 100.00%')
     return mdl, output_bounds
+
+
+def insert_tjeng_output_constraints(mdl, output_bounds, network_output, variables):
+    output_variable = variables['output'][network_output]
+    diffs = output_bounds[network_output][1] - np.array(output_bounds)[:, 0]
+    binary_idx = 0
+    for output_idx, output in enumerate(variables['output']):
+        if output_idx != network_output:
+            diff = diffs[output_idx]
+            binary_variable = variables['binary'][binary_idx]
+            mdl.add_constraint(output_variable - output - diff * (1 - binary_variable) <= 0)
+            binary_idx += 1
