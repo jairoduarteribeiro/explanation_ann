@@ -2,7 +2,7 @@ import unittest
 import pandas as pd
 import numpy as np
 from docplex.mp.model import Model
-from solver_utils import get_input_domain_and_bounds, get_input_variables
+from solver_utils import get_input_domain_and_bounds, get_input_variables, get_intermediate_variables
 
 
 class TestSolverUtils(unittest.TestCase):
@@ -34,6 +34,24 @@ class TestSolverUtils(unittest.TestCase):
         self.assertEqual(input_variables[2].name, 'x_2')
         self.assertEqual(input_variables[2].lb, bounds[2][0])
         self.assertEqual(input_variables[2].ub, bounds[2][1])
+
+    def test_get_intermediate_variables(self):
+        mdl = Model()
+        number_variables = 3
+        intermediate_variables = get_intermediate_variables(mdl, 1, number_variables)
+        self.assertEqual(len(intermediate_variables), number_variables)
+        self.assertTrue(intermediate_variables[0].is_continuous())
+        self.assertEqual(intermediate_variables[0].name, 'y_1_0')
+        self.assertEqual(intermediate_variables[0].lb, 0)
+        self.assertEqual(intermediate_variables[0].ub, mdl.infinity)
+        self.assertTrue(intermediate_variables[1].is_continuous())
+        self.assertEqual(intermediate_variables[1].name, 'y_1_1')
+        self.assertEqual(intermediate_variables[1].lb, 0)
+        self.assertEqual(intermediate_variables[1].ub, mdl.infinity)
+        self.assertTrue(intermediate_variables[2].is_continuous())
+        self.assertEqual(intermediate_variables[2].name, 'y_1_2')
+        self.assertEqual(intermediate_variables[2].lb, 0)
+        self.assertEqual(intermediate_variables[2].ub, mdl.infinity)
 
 
 if __name__ == '__main__':
