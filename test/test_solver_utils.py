@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from docplex.mp.model import Model
 from solver_utils import get_input_domain_and_bounds, get_input_variables, get_intermediate_variables, \
-    get_auxiliary_variables
+    get_auxiliary_variables, get_decision_variables
 
 
 class TestSolverUtils(unittest.TestCase):
@@ -71,6 +71,24 @@ class TestSolverUtils(unittest.TestCase):
         self.assertEqual(auxiliary_variables[2].name, 's_1_2')
         self.assertEqual(auxiliary_variables[2].lb, 0)
         self.assertEqual(auxiliary_variables[2].ub, mdl.infinity)
+
+    def test_get_decision_variables(self):
+        mdl = Model()
+        number_variables = 3
+        decision_variables = get_decision_variables(mdl, 1, number_variables)
+        self.assertEqual(len(decision_variables), number_variables)
+        self.assertTrue(decision_variables[0].is_binary())
+        self.assertEqual(decision_variables[0].name, 'a_1_0')
+        self.assertEqual(decision_variables[0].lb, 0)
+        self.assertEqual(decision_variables[0].ub, 1)
+        self.assertTrue(decision_variables[1].is_binary())
+        self.assertEqual(decision_variables[1].name, 'a_1_1')
+        self.assertEqual(decision_variables[1].lb, 0)
+        self.assertEqual(decision_variables[1].ub, 1)
+        self.assertTrue(decision_variables[2].is_binary())
+        self.assertEqual(decision_variables[2].name, 'a_1_2')
+        self.assertEqual(decision_variables[2].lb, 0)
+        self.assertEqual(decision_variables[2].ub, 1)
 
 
 if __name__ == '__main__':
