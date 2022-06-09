@@ -9,6 +9,7 @@ def load_data():
     df.loc[df.target == 'Iris-setosa', 'target'] = 0
     df.loc[df.target == 'Iris-versicolor', 'target'] = 1
     df.loc[df.target == 'Iris-virginica', 'target'] = 2
+    df['target'] = df['target'].astype('int')
     x = df.iloc[:, :-1]
     y = df.iloc[:, -1]
     x = transform(x, x.columns)
