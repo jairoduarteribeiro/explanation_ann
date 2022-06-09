@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from docplex.mp.model import Model
 from solver_utils import get_input_domain_and_bounds, get_input_variables, get_intermediate_variables, \
-    get_auxiliary_variables, get_decision_variables
+    get_auxiliary_variables, get_decision_variables, get_output_variables
 
 
 class TestSolverUtils(unittest.TestCase):
@@ -89,6 +89,24 @@ class TestSolverUtils(unittest.TestCase):
         self.assertEqual(decision_variables[2].name, 'a_1_2')
         self.assertEqual(decision_variables[2].lb, 0)
         self.assertEqual(decision_variables[2].ub, 1)
+
+    def test_get_output_variables(self):
+        mdl = Model()
+        number_variables = 3
+        output_variables = get_output_variables(mdl, number_variables)
+        self.assertEqual(len(output_variables), number_variables)
+        self.assertTrue(output_variables[0].is_continuous())
+        self.assertEqual(output_variables[0].name, 'o_0')
+        self.assertEqual(output_variables[0].lb, -mdl.infinity)
+        self.assertEqual(output_variables[0].ub, mdl.infinity)
+        self.assertTrue(output_variables[1].is_continuous())
+        self.assertEqual(output_variables[1].name, 'o_1')
+        self.assertEqual(output_variables[1].lb, -mdl.infinity)
+        self.assertEqual(output_variables[1].ub, mdl.infinity)
+        self.assertTrue(output_variables[2].is_continuous())
+        self.assertEqual(output_variables[2].name, 'o_2')
+        self.assertEqual(output_variables[2].lb, -mdl.infinity)
+        self.assertEqual(output_variables[2].ub, mdl.infinity)
 
 
 if __name__ == '__main__':
