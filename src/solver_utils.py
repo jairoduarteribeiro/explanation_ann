@@ -45,10 +45,6 @@ def get_decision_variables(mdl, layer_index, number_variables):
     return mdl.binary_var_list(number_variables, name='a', key_format=f'_{layer_index}_%s')
 
 
-def get_relax_decision_variables(mdl, layer_index, number_variables):
-    return mdl.continuous_var_list(number_variables, lb=0, ub=1, name='a', key_format=f'_{layer_index}_%s')
-
-
 def get_output_variables(mdl, number_variables):
     return mdl.continuous_var_list(number_variables, lb=-infinity, name='o')
 
