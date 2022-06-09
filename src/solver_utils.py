@@ -1,5 +1,4 @@
 import numpy as np
-from cplex import infinity
 
 
 def get_input_domain_and_bounds(dataframe):
@@ -46,7 +45,7 @@ def get_decision_variables(mdl, layer_index, number_variables):
 
 
 def get_output_variables(mdl, number_variables):
-    return mdl.continuous_var_list(number_variables, lb=-infinity, name='o')
+    return mdl.continuous_var_list(number_variables, lb=-mdl.infinity, name='o')
 
 
 def maximize(mdl, variable):
