@@ -28,4 +28,8 @@ def build_network(model, dataframe, method):
         mdl, output_bounds = build_fischetti_network(mdl, layers, variables)
     else:
         mdl, output_bounds = build_tjeng_network(mdl, layers, variables)
-    return mdl, output_bounds
+    bounds = {
+        'input': input_bounds,
+        'output': output_bounds
+    }
+    return mdl, bounds
