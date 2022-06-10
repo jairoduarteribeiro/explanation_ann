@@ -1,12 +1,14 @@
+import numpy as np
 from fischetti import insert_output_constraints_fischetti
 from tjeng import insert_tjeng_output_constraints
 
 
-def print_explanation(x_idx, x_columns, explanation):
+def print_explanation(x_idx, features, explanation):
     def constraint_to_idx(constraint):
-        return constraint.lhs.name
+        return int(constraint.lhs.name[2:])
     columns = [constraint_to_idx(constraint) for constraint in explanation]
-    print(f'Explanation for data {x_idx}: {columns}')
+    result = list(features[columns])
+    print(f'Explanation for data {x_idx}: {result}')
 
 
 def get_minimal_explanation(mdl, output_bounds, method, network_input, network_output):
