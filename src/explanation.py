@@ -11,7 +11,7 @@ def print_explanation(x_idx, features, explanation):
     print(f'Explanation for data {x_idx}: {result}')
 
 
-def get_minimal_explanation(mdl, bounds, method, network_input, network_output):
+def get_minimal_explanation(mdl, bounds, method, network_input, network_output, layers):
     number_classes = len(bounds['output'])
     variables = {
         'output': [mdl.get_var_by_name(f'o_{class_idx}') for class_idx in range(number_classes)],
