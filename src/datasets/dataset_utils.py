@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 from os.path import join, dirname
 
 
@@ -10,8 +9,8 @@ def get_dataset_path(*paths):
 
 
 def transform(x, x_columns=None):
-    pipe = Pipeline(steps=[('scaler1', MinMaxScaler()), ('scaler2', StandardScaler())])
-    x = pipe.fit_transform(x)
+    scaler = MinMaxScaler()
+    x = scaler.fit_transform(x)
     return pd.DataFrame(x, columns=x_columns)
 
 
@@ -25,7 +24,3 @@ def split_dataset(x, y):
 def save_dataset(x, y, csv_path):
     csv = pd.concat([x, y], axis=1)
     csv.to_csv(csv_path, index=False)
-
-
-if __name__ == '__main__':
-    print(get_dataset_path('heart_disease', 'heart.csv'))
