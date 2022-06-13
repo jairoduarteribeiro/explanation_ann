@@ -20,6 +20,7 @@ def main():
     layers = model.layers
     mdl, bounds = build_network(model, dataframe, 'fischetti')
     for data_idx, data in test_data.iterrows():
+        print(f'Getting explanation for data {data_idx}...')
         network_input = tf.reshape(data.iloc[:-1], (1, -1))
         network_output = np.argmax(model.predict(network_input))
         mdl_clone = mdl.clone()

@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import Normalizer
 from os.path import join, dirname
 
 
@@ -9,7 +9,7 @@ def get_dataset_path(*paths):
 
 
 def transform(x, x_columns=None):
-    scaler = MinMaxScaler()
+    scaler = Normalizer()
     x = scaler.fit_transform(x)
     return pd.DataFrame(x, columns=x_columns)
 
