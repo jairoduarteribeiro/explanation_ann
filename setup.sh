@@ -10,6 +10,9 @@ if [ ! -d ".venv" ]; then
   echo "Upgrading pip..."
   pip install -U pip
 
+  echo "Installing dependencies..."
+  pip install -r requirements.txt
+
   echo "Exiting virtual environment..."
   deactivate
 fi
