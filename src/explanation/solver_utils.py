@@ -34,3 +34,7 @@ def get_input_variables(mdl, input_domain, input_bounds):
 
 def get_intermediate_variables(mdl, layer_index, number_variables):
     return mdl.continuous_var_list(number_variables, lb=0, name='y', key_format=f'_{layer_index}_%s')
+
+
+def get_auxiliary_variables(mdl, layer_index, number_variables):
+    return mdl.continuous_var_list(number_variables, lb=0, name='s', key_format=f'_{layer_index}_%s')
