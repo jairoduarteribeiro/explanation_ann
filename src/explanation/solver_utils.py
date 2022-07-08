@@ -38,3 +38,7 @@ def get_intermediate_variables(mdl, layer_index, number_variables):
 
 def get_auxiliary_variables(mdl, layer_index, number_variables):
     return mdl.continuous_var_list(number_variables, lb=0, name='s', key_format=f'_{layer_index}_%s')
+
+
+def get_decision_variables(mdl, layer_index, number_variables):
+    return mdl.binary_var_list(number_variables, name='a', key_format=f'_{layer_index}_%s')
