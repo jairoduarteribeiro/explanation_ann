@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Flatten, Dense
+from keras.layers import Dense, InputLayer
 from keras.activations import relu, softmax
 from keras.optimizers import Adam
 from keras.losses import SparseCategoricalCrossentropy
@@ -20,7 +20,7 @@ n_epochs = 100
 batch_size = 4
 
 # Create model
-model = Sequential([Flatten()])
+model = Sequential([InputLayer(input_shape=(x_train.shape[1]))])
 for _ in range(n_hidden_layers - 1):
     model.add(Dense(n_neurons, activation=relu))
 model.add(Dense(n_classes, activation=softmax))
