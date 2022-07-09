@@ -46,3 +46,19 @@ def get_decision_variables(mdl, layer_index, number_variables):
 
 def get_output_variables(mdl, number_variables):
     return mdl.continuous_var_list(number_variables, lb=-mdl.infinity, name='o')
+
+
+def maximize(mdl, variable):
+    mdl.maximize(variable)
+    mdl.solve()
+    objective = mdl.solution.get_objective_value()
+    mdl.remove_objective()
+    return objective
+
+
+def minimize(mdl, variable):
+    mdl.minimize(variable)
+    mdl.solve()
+    objective = mdl.solution.get_objective_value()
+    mdl.remove_objective()
+    return objective
