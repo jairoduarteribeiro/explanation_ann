@@ -39,7 +39,7 @@ def build_fischetti_network(mdl, layers, variables):
     return mdl, output_bounds
 
 
-def insert_output_constraints_fischetti(mdl, network_output, variables):
+def insert_fischetti_output_constraints(mdl, network_output, variables):
     output_variable = variables['output'][network_output]
     binary_idx = 0
     for output_idx, output in enumerate(variables['output']):

@@ -1,4 +1,4 @@
-from explanation.fischetti import insert_output_constraints_fischetti
+from explanation.fischetti import insert_fischetti_output_constraints
 from explanation.tjeng import insert_tjeng_output_constraints
 
 
@@ -21,7 +21,7 @@ def get_minimal_explanation(mdl, bounds, method, network_input, network_output):
         names='input')
     mdl.add_constraint(mdl.sum(variables['binary']) >= 1)
     if method == 'fischetti':
-        insert_output_constraints_fischetti(mdl, network_output, variables)
+        insert_fischetti_output_constraints(mdl, network_output, variables)
     else:
         insert_tjeng_output_constraints(mdl, bounds['output'], network_output, variables)
     for constraint in input_constraints:
