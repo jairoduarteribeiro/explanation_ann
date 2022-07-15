@@ -30,15 +30,15 @@ def box_forward(input_bounds, input_weights, input_biases, apply_relu=True):
     return result_forward
 
 
-def box_fix_input_bounds(input_bounds, network_input, input_idx):
-    fixed_bounds = []
+def box_relax_input_bounds(input_bounds, network_input, relax_idx):
+    relaxed_bounds = []
     for idx, bounds in enumerate(input_bounds):
-        if idx == input_idx:
-            fixed_bounds.append([bounds[0], bounds[1]])
+        if idx in relax_idx:
+            relaxed_bounds.append([bounds[0], bounds[1]])
         else:
             feature = network_input[0][idx]
-            fixed_bounds.append([feature, feature])
-    return fixed_bounds
+            relaxed_bounds.append([feature, feature])
+    return relaxed_bounds
 
 
 def box_check_solution(bounds, network_output):
@@ -46,3 +46,12 @@ def box_check_solution(bounds, network_output):
     bounds = np.delete(bounds, network_output, axis=0)
     max_upper_bound = np.max(bounds, axis=0)[1]
     return lower_bound > max_upper_bound
+
+
+def box_has_solution(bounds, layers, network_output):
+    for layer_idx, layer in enumerate(layers):
+        weights = layer.get_weights()[0].T
+        biases = layer.bias.numpy()
+        bounds = box_forward(bounds, weights, biases) if layer_idx != len(layers) - 1 \
+            else box_forward(bounds, weights, biases, apply_relu=False)
+    return box_check_solution(bounds, network_output)

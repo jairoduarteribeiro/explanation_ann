@@ -2,7 +2,7 @@ import unittest
 import tensorflow as tf
 
 from numpy.testing import assert_array_almost_equal
-from explanation.box import box_check_solution, box_fix_input_bounds, box_forward, box_product, box_relu, box_sum
+from explanation.box import box_check_solution, box_forward, box_product, box_relax_input_bounds, box_relu, box_sum
 
 
 class TestBox(unittest.TestCase):
@@ -47,12 +47,18 @@ class TestBox(unittest.TestCase):
         output_bounds = box_forward(input_bounds, input_weights, input_biases, apply_relu=False)
         assert_array_almost_equal(output_bounds, [[0.6, 1.4], [-0.6, 0.2]])
 
-    def test_box_fix_input_bounds(self):
+    def test_box_relax_input_bounds(self):
         input_bounds = [[1, 2], [3, 4], [5, 6]]
         network_input = [[1.5, 3.5, 5.5]]
-        input_idx = 1
-        fixed_bounds = box_fix_input_bounds(input_bounds, network_input, input_idx)
-        assert_array_almost_equal(fixed_bounds, [[1.5, 1.5], [3, 4], [5.5, 5.5]])
+        relax_idx = [1]
+        relaxed_bounds = box_relax_input_bounds(input_bounds, network_input, relax_idx)
+        assert_array_almost_equal(relaxed_bounds, [[1.5, 1.5], [3, 4], [5.5, 5.5]])
+        relax_idx = [0, 1]
+        relaxed_bounds = box_relax_input_bounds(input_bounds, network_input, relax_idx)
+        assert_array_almost_equal(relaxed_bounds, [[1, 2], [3, 4], [5.5, 5.5]])
+        relax_idx = [0, 2]
+        relaxed_bounds = box_relax_input_bounds(input_bounds, network_input, relax_idx)
+        assert_array_almost_equal(relaxed_bounds, [[1, 2], [3.5, 3.5], [5, 6]])
 
     def test_box_check_solution(self):
         bounds = [[0.6, 1.4], [-0.6, 0.2]]

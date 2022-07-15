@@ -11,7 +11,7 @@ from explanation.milp import build_network
 
 
 logging.basicConfig(
-    filename='explanation.log',
+    filename='explanation_box.log',
     filemode='w',
     format=f'{"".ljust(120, "-")}\n%(asctime)s\n\n%(message)s')
 logger = logging.getLogger('explanation')
@@ -27,6 +27,7 @@ if __name__ == '__main__':
     dataframe = pd.concat([train_data, test_data], ignore_index=True)
     model_path = get_model_path('iris.h5')
     model = load_model(model_path)
+    layers = model.layers
     mdl, bounds = build_network(model, dataframe, 'tjeng')
     for data_idx, data in test_data.iterrows():
         logger.info(f'Getting explanation for data {data_idx}\n{data}')
@@ -34,5 +35,5 @@ if __name__ == '__main__':
         network_output = np.argmax(model.predict(network_input))
         logger.info(f'Predicted output: {network_output}')
         mdl_clone = mdl.clone()
-        explanation = get_minimal_explanation(mdl_clone, bounds, 'tjeng', network_input, network_output)
+        explanation = get_minimal_explanation(mdl_clone, bounds, 'tjeng', network_input, network_output, layers, True)
         log_explanation(logger, features, explanation)
